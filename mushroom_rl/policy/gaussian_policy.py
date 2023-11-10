@@ -15,9 +15,9 @@ class AbstractGaussianPolicy(ParametricPolicy):
         return multivariate_normal.pdf(action, mu, sigma)
 
     def draw_action(self, state):
-        mu, sigma = self._compute_multivariate_gaussian(state)[:2]
+        mu, sigma, std = self._compute_multivariate_gaussian(state) # CASPAR: Return also the standard deviation
 
-        return np.random.multivariate_normal(mu, sigma)
+        return np.random.multivariate_normal(mu, sigma), std # CASPAR: Return also the standard deviation
 
 
 class GaussianPolicy(AbstractGaussianPolicy):
@@ -258,6 +258,7 @@ class StateStdGaussianPolicy(AbstractGaussianPolicy):
         return self._mu_approximator.weights_size + \
                self._std_approximator.weights_size
 
+    # CASPAR: Here the two networks are called to predict the mean and the standard deviation
     def _compute_multivariate_gaussian(self, state):
         mu = np.reshape(self._mu_approximator.predict(
             np.expand_dims(state, axis=0), **self._predict_params), -1)

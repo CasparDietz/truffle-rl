@@ -199,9 +199,9 @@ class Core(object):
             state, the absorbing flag of the reached state and the last step flag.
 
         """
-        action = self.agent.draw_action(self._state)
+        action, std = self.agent.draw_action(self._state) # CASPAR: Also returns the standard deviation of the action distribution
         next_state, reward, absorbing, step_info = self.mdp.step(action)
-
+        step_info['std'] = std.item() # CASPAR: Save the standard deviation of the action distribution
         self._episode_steps += 1
 
         if render:

@@ -92,7 +92,7 @@ class Gym(Environment):
 
     def step(self, action):
         action = self._convert_action(action)
-        obs, reward, absorbing, info = self.env.step(action)
+        obs, reward, absorbing, info = self.env.step(action) # CASPAR INFO: Jump into the gym environment
 
         return np.atleast_1d(obs), reward, absorbing, info
 
